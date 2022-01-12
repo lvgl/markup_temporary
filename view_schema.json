@@ -1,0 +1,1282 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "JSON Schema for views in peabody project",
+    "description": "A schema to validate a given view json",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "view": {
+            "type": "object",
+            "description": "View object (Expand to contain further view elements later)",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "width": {
+                    "type": "integer",
+                    "description": "Width of the view object",
+                    "minimum": 0
+                },
+                "height": {
+                    "type": "integer",
+                    "description": "Height of the view object",
+                    "minimum": 0
+                },
+                "scrollbar_mode": {
+                    "type": "integer",
+                    "description": "Whether or not the view should have a scrollbare (vert or horizontal)",
+                    "minimum": 0,
+                    "maximum": 1
+                },
+                "bg_opa": {
+                    "type": "integer",
+                    "description": "Bg opacity of the view, nominally set to 255",
+                    "minimum": 0,
+                    "maximum": 255
+                },
+                "bg_color": {
+                    "type": "object",
+                    "description": "Color for the background of the view",
+                    "properties": {
+                        "r": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 255
+                        },
+                        "g": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 255
+                        },
+                        "b": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 255
+                        }
+                    }
+                }
+            },
+            "required": [
+                "name",
+                "width",
+                "height",
+                "scrollbar_mode",
+                "bg_opa",
+                "bg_color"
+            ]
+        },
+        "widgets": {
+            "type": "array",
+            "description": "Collection of widgets on this view",
+            "items":{
+                "anyOf": [
+                    {
+                        "type": "object",
+                        "$ref": "#/definitions/arc"
+                    },{
+                        "type": "object",
+                        "$ref": "#/definitions/bar"
+                    },{
+                        "type": "object",
+                        "$ref": "#/definitions/image"
+                    },{
+                        "type": "object",
+                        "$ref": "#/definitions/label"
+                    },{
+                        "type": "object",
+                        "$ref": "#/definitions/meter"
+                    },{
+                        "type": "object",
+                        "$ref": "#/definitions/canvas"
+                    }
+                ]
+            }
+        }
+    },
+    "definitions": {
+        "arc":
+        {
+            "type": "object",
+            "description": "An LVGL Arc Widget",
+            "title": "https://docs.lvgl.io/master/widgets/core/arc.html",
+            "properties": {
+                "type": {
+                    "const": "arc"
+                },
+                "values": {
+                    "$ref": "#/definitions/values"
+                },
+                "arc_values": {
+                    "type": "object",
+                    "description": "The values to set for the arc widget when created",
+                    "properties": {
+                        "value": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/widgets/core/arc.html#_CPPv416lv_arc_set_valueP8lv_obj_t7int16_t",
+                            "description": "Initial value for LVGL arc widget"
+                        },
+                        "arc_opa":{
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/overview/style-props.html#arc-opa",
+                            "description": "Opacity of the arc widget"
+                        },
+                        "rotation": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/widgets/core/arc.html#_CPPv419lv_arc_set_rotationP8lv_obj_t8uint16_t",
+                            "description": "Rotation for an LVGL Arc Widget"
+                        },
+                        "start_angle": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/widgets/core/arc.html#_CPPv422lv_arc_set_start_angleP8lv_obj_t8uint16_t",
+                            "description": "Start angle for the indicator of an LVGL arc widget",
+                            "minimum": 0,
+                            "maximum": 360
+                        },
+                        "end_angle": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/widgets/core/arc.html#_CPPv420lv_arc_set_end_angleP8lv_obj_t8uint16_t",
+                            "description": "End angle for indicator of an LVGL arc widget",
+                            "minimum": 0,
+                            "maximum": 360
+                        },
+                        "bg_start_angle": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/widgets/core/arc.html#_CPPv425lv_arc_set_bg_start_angleP8lv_obj_t8uint16_t",
+                            "description": "start angle for bg of an LVGL arc widget",
+                            "minimum": 0,
+                            "maximum": 360
+
+                        },
+                        "bg_end_angle": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/widgets/core/arc.html#_CPPv423lv_arc_set_bg_end_angleP8lv_obj_t8uint16_t",
+                            "description": "End angle for bg of an LVGL arc widget",
+                            "minimum": 0,
+                            "maximum": 360
+                        },
+                        "arc_stroke_width": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/overview/style.html#_CPPv426lv_obj_set_style_arc_widthP9_lv_obj_t10lv_coord_t19lv_style_selector_t",
+                            "description": "Stroke width of bg and indicator of an LVGL arc widget",
+                            "minimum": 0,
+                            "maximum": 50
+                        },
+                        "arc_rounded": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/overview/style.html#_CPPv428lv_obj_set_style_arc_roundedP9_lv_obj_tb19lv_style_selector_t",
+                            "description": "Determines if bg and indicator are rounded are flat on an LVGL arc widget at creation",
+                            "minimum": 0,
+                            "maximum": 1
+                        },
+                        "arc_indicator_color": {
+                            "type": "object",
+                            "title": "https://docs.lvgl.io/master/overview/style.html#_CPPv426lv_obj_set_style_arc_colorP9_lv_obj_t10lv_color_t19lv_style_selector_t",
+                            "description": "Color of the indicator arc at creation",
+                            "properties": {
+                                "r": {
+                                    "type": "integer",
+                                    "description": "red value",
+                                    "minimum": 0,
+                                    "maximum": 255
+                                },
+                                "g": {
+                                    "type": "integer",
+                                    "description": "green value",
+                                    "minimum": 0,
+                                    "maximum": 255
+                                },
+                                "b": {
+                                    "type": "integer",
+                                    "description": "blue value",
+                                    "minimum": 0,
+                                    "maximum": 255
+                                }
+                            },
+                            "required": [
+                                "r",
+                                "g",
+                                "b"
+                            ]
+                        },
+                        "arc_bg_color": {
+                            "type": "object",
+                            "title": "https://docs.lvgl.io/master/overview/style.html#_CPPv426lv_obj_set_style_arc_colorP9_lv_obj_t10lv_color_t19lv_style_selector_t",
+                            "description": "Color of the background arc at creation",
+                            "properties": {
+                                "r": {
+                                    "type": "integer",
+                                    "description": "red value",
+                                    "minimum": 0,
+                                    "maximum": 255
+                                },
+                                "g": {
+                                    "type": "integer",
+                                    "description": "green value",
+                                    "minimum": 0,
+                                    "maximum": 255
+                                },
+                                "b": {
+                                    "type": "integer",
+                                    "description": "blue value",
+                                    "minimum": 0,
+                                    "maximum": 255
+                                }
+                            },
+                            "required": [
+                                "r",
+                                "g",
+                                "b"
+                            ]
+                        },
+                        "arc_clickable": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/widgets/obj.html?highlight=add_flag#_CPPv415lv_obj_add_flagP8lv_obj_t13lv_obj_flag_t",
+                            "description": "Is the arc clickable or not at creation? Should always be 0 in non-touch application",
+                            "minimum": 0,
+                            "maximum": 1
+
+                        },
+                        "arc_knob": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/widgets/core/arc.html#_CPPv4N23lv_arc_draw_part_type_t21LV_ARC_DRAW_PART_KNOBE",
+                            "description": "Is the arc knob visible or hidden at creation?",
+                            "minimum": 0,
+                            "maximum": 1
+                        }
+                    }
+                },
+                "aos": {
+                    "type": "array",
+                    "description": "Contains the collection of animations to run on view creation for a given widget",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/animation"
+                            }
+                        ]
+                    }
+                },
+                "aoe": {
+                    "type": "array",
+                    "description": "Contains the collection of animations to run on view exit for a given widget",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/animation"
+                            }
+                        ]
+                    }
+                },
+                "adc": {
+                    "type": "array",
+                    "description": "Contains the collection of animations to run when data has changed in firmata, or if there is a call_adc_on_cb is set",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/animation"
+                            }
+                        ]
+                    }
+                }
+            },
+            "required": [
+                "values",
+                "type",
+                "arc_values"
+            ]
+        },
+
+        "bar": {
+            "type": "object",
+            "title": "https://docs.lvgl.io/master/widgets/core/bar.html",
+            "description": "An LVGL bar widget",
+            "properties": {
+                "type": {
+                    "const": "bar"
+                },
+                "values": {
+                    "$ref": "#/definitions/values"
+                },
+                "bar_values": {
+                    "type": "object",
+                    "description": "Collection of values to be set for the bar widget at creation",
+                    "properties": {
+                        "style_radius": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/overview/style.html?highlight=style_radius#_CPPv423lv_obj_set_style_radiusP9_lv_obj_t10lv_coord_t19lv_style_selector_t",
+                            "description": "Sets the corner radius of the bar widget at creation",
+                            "minimum": 0,
+                            "maximum": 50
+                        },
+                        "bg_opa": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/overview/style.html?highlight=style_radius#_CPPv423lv_obj_set_style_bg_opaP9_lv_obj_t8lv_opa_t19lv_style_selector_t",
+                            "description": "Sets the background opacity of the bar widget at creation",
+                            "minimum": 0,
+                            "maximum": 255
+                        },
+                        "bg_color": {
+                            "type": "object",
+                            "title": "https://docs.lvgl.io/master/overview/style.html?highlight=bg_color#_CPPv425lv_obj_set_style_bg_colorP9_lv_obj_t10lv_color_t19lv_style_selector_t",
+                            "description": "Sets the color of the bar widget at creation",
+                            "properties": {
+                                "r": {
+                                    "type": "integer",
+                                    "description": "red value",
+                                    "minimum": 0,
+                                    "maximum": 255
+                                },
+                                "g": {
+                                    "type": "integer",
+                                    "description": "green value",
+                                    "minimum": 0,
+                                    "maximum": 255
+                                },
+                                "b": {
+                                    "type": "integer",
+                                    "description": "blue value",
+                                    "minimum": 0,
+                                    "maximum": 255
+                                }
+                            },
+                            "required": [
+                                "r",
+                                "g",
+                                "b"
+                            ]
+                        },
+                        "scrollbar_mode": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/overview/scroll.html?highlight=lv_obj_set_scrollbar_mode#scrollbar",
+                            "description": "Determines whether or not a scrollbar will appear when created",
+                            "minimum": 0,
+                            "maximum": 1
+                        }
+                    }
+                },
+                "aos": {
+                    "type": "array",
+                    "description": "Contains the collection of animations to run on view creation for a given widget",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/animation"
+                            }
+                        ]
+                    }
+                },
+                "aoe": {
+                    "type": "array",
+                    "description": "Contains the collection of animations to run on view exit for a given widget",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/animation"
+                            }
+                        ]
+                    }
+                },
+                "adc": {
+                    "type": "array",
+                    "description": "Contains the collection of animations to run when data has changed in firmata, or if there is a call_adc_on_cb is set",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/animation"
+                            }
+                        ]
+                    }
+                }
+            },
+            "required": [
+                "values",
+                "type",
+                "bar_values"
+            ]
+        },
+        "image": {
+            "type": "object",
+            "title": "https://docs.lvgl.io/master/widgets/core/img.html",
+            "description": "An LVGL image widget",
+            "properties": {
+                "type": {
+                    "const": "image"
+                },
+                "values": {
+                    "$ref": "#/definitions/values"
+                },
+                "image_values": {
+                    "type": "object",
+                    "description": "Contains properties specific to LVGL image widgets, which are set at object creation",
+                    "properties": {
+                        "img_opa": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/overview/style.html?highlight=img_opa#_CPPv424lv_obj_set_style_img_opaP9_lv_obj_t8lv_opa_t19lv_style_selector_t",
+                            "description": "Sets the image opacity of the image at creation time, defaults to 255",
+                            "minimum": 0,
+                            "maximum": 255
+                        },
+                        "src": {
+                            "anyOf": [
+                                {
+                                    "description": "The src to be provided to the image widget at creation, abstracted to a string. If loading from a file system, use the bin value instead of src",
+                                    "title": "https://docs.lvgl.io/master/widgets/core/img.html#_CPPv414lv_img_set_srcP8lv_obj_tPKv",
+                                    "enum": [
+                                        "logo",
+                                        "lightning",
+                                        "catcouchdude",
+                                        "dog",
+                                        "brush",
+                                        "water",
+                                        "no_water",
+                                        "low_water",
+                                        "error",
+                                        "battery_border",
+                                        "wifi",
+                                        "dry_turbo",
+                                        "wet_turbo",
+                                        "vac_render",
+                                        "dock_render",
+                                        "twinkle_0",
+                                        "twinkle_1",
+                                        "twinkle_2",
+                                        "twinkle_3",
+                                        "twinkle_4",
+                                        "place_clean_tank",
+                                        "add_water",
+                                        "dirty_tank_replace",
+                                        "percent_symbol"
+                                    ]
+                                },
+                                {
+                                    "type": "string",
+                                    "title": "https://docs.lvgl.io/master/widgets/core/img.html#_CPPv414lv_img_set_srcP8lv_obj_tPKv",
+                                    "description": "A string to the binarized image file held in spiffs, fs/assets. Asset size should be limited, loading full screen assets from spiffs is slow"
+                                }
+                            ]
+
+                        }
+                    },
+                    "required": [
+                        "src"
+                    ]
+                },
+                "aos": {
+                    "type": "array",
+                    "description": "Contains the collection of animations to run on view creation for a given widget",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/animation"
+                            }
+                        ]
+                    }
+                },
+                "aoe": {
+                    "type": "array",
+                    "description": "Contains the collection of animations to run on view exit for a given widget",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/animation"
+                            }
+                        ]
+                    }
+                },
+                "adc": {
+                    "type": "array",
+                    "description": "Contains the collection of animations to run when data has changed in firmata, or if there is a call_adc_on_cb is set",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/animation"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "label": {
+            "type": "object",
+            "title": "https://docs.lvgl.io/master/widgets/core/label.html",
+            "description": "An LVGL label widget",
+            "properties": {
+                "type": {
+                    "const": "label"
+                },
+                "values": {
+                    "$ref": "#/definitions/values"
+                },
+                "label_values": {
+                    "type": "object",
+                    "description": "Values to set for the label widget at creation",
+                    "properties": {
+                        "font": {
+                            "type": "string",
+                            "title": "https://docs.lvgl.io/master/overview/style.html?highlight=lv_obj_set_style_text_font#_CPPv426lv_obj_set_style_text_fontP9_lv_obj_tPK9lv_font_t19lv_style_selector_t",
+                            "description": "Sets the font by abstraction, by default sets to lv_font_montserrat_16",
+                            "enum": [
+                                "monospace_cubic_30",
+                                "monospace_cubic_16",
+                                "montserrat_regular_30",
+                                "montserrat_regular_16",
+                                "lv_font_montserrat_30",
+                                "lv_font_montserrat_16"
+                            ]
+                        },
+                        "default_text": {
+                            "type": "string",
+                            "title": "https://docs.lvgl.io/master/widgets/core/label.html#_CPPv417lv_label_set_textP8lv_obj_tPKc",
+                            "description": "Default string to set when label is created"
+                        }
+                    }
+                },
+                "aos": {
+                    "type": "array",
+                    "description": "Contains the collection of animations to run on view creation for a given widget",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/animation"
+                            }
+                        ]
+                    }
+                },
+                "aoe": {
+                    "type": "array",
+                    "description": "Contains the collection of animations to run on view exit for a given widget",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/animation"
+                            }
+                        ]
+                    }
+                },
+                "adc": {
+                    "type": "array",
+                    "description": "Contains the collection of animations to run when data has changed in firmata, or if there is a call_adc_on_cb is set",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/animation"
+                            }
+                        ]
+                    }
+                }
+            },
+            "required": [
+                "type",
+                "values",
+                "label_values"
+            ]
+        },
+        "meter": {
+            "type": "object",
+            "title": "https://docs.lvgl.io/master/widgets/extra/meter.html",
+            "description": "An LVGL meter widget - resource intensive",
+            "properties": {
+                "type": {
+                    "const": "meter"
+                },
+                "values": {
+                    "$ref": "#/definitions/values"
+                },
+                "meter_scale": {
+                    "type": "object",
+                    "title": "https://docs.lvgl.io/master/widgets/extra/meter.html#_CPPv418lv_meter_add_scaleP8lv_obj_t",
+                    "description": "The scale to be applied to the meter object (background to the indicator), created at object creation time",
+                    "properties": {
+                        "num_ticks": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/widgets/extra/meter.html#_CPPv424lv_meter_set_scale_ticksP8lv_obj_tP16lv_meter_scale_t8uint16_t8uint16_t8uint16_t10lv_color_t",
+                            "description": "The number of background ticks to be created",
+                            "minimum": 0,
+                            "maximum": 100
+                        },
+                        "tick_width": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/widgets/extra/meter.html#_CPPv424lv_meter_set_scale_ticksP8lv_obj_tP16lv_meter_scale_t8uint16_t8uint16_t8uint16_t10lv_color_t",
+                            "description": "The width of each background tick to be created",
+                            "minimum": 1,
+                            "maximum": 20
+                        },
+                        "tick_length": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/widgets/extra/meter.html#_CPPv424lv_meter_set_scale_ticksP8lv_obj_tP16lv_meter_scale_t8uint16_t8uint16_t8uint16_t10lv_color_t",
+                            "description": "The length of each background tick to be created",
+                            "minimum": 1,
+                            "maximum": 50
+                        },
+                        "tick_color": {
+                            "type": "object",
+                            "title": "https://docs.lvgl.io/master/widgets/extra/meter.html#_CPPv424lv_meter_set_scale_ticksP8lv_obj_tP16lv_meter_scale_t8uint16_t8uint16_t8uint16_t10lv_color_t",
+                            "description": "Color of the background ticks",
+                            "properties": {
+                                "r": {
+                                    "type": "integer",
+                                    "description": "red value",
+                                    "minimum": 0,
+                                    "maximum": 255
+                                },
+                                "g": {
+                                    "type": "integer",
+                                    "description": "green value",
+                                    "minimum": 0,
+                                    "maximum": 255
+                                },
+                                "b": {
+                                    "type": "integer",
+                                    "description": "blue value",
+                                    "minimum": 0,
+                                    "maximum": 255
+                                }
+                            },
+                            "required": [
+                                "r",
+                                "g",
+                                "b"
+                            ]
+                        },
+                        "range_start": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/widgets/extra/meter.html#_CPPv424lv_meter_set_scale_rangeP8lv_obj_tP16lv_meter_scale_t7int32_t7int32_t8uint32_t8uint32_t",
+                            "description": "Start value of the scale, right now only one scale can be applied to the target, so should be set to 0",
+                            "minimum": 0,
+                            "maximum": 100
+                        },
+                        "range_end": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/widgets/extra/meter.html#_CPPv424lv_meter_set_scale_rangeP8lv_obj_tP16lv_meter_scale_t7int32_t7int32_t8uint32_t8uint32_t",
+                            "description": "end value of the scale, right now only one scale can be applied to the target, so should be set to 100",
+                            "minimum": 0,
+                            "maximum": 100
+                        },
+                        "angle_range": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/widgets/extra/meter.html#_CPPv424lv_meter_set_scale_rangeP8lv_obj_tP16lv_meter_scale_t7int32_t7int32_t8uint32_t8uint32_t",
+                            "description": "Angle used to determine how much of the full circle to draw",
+                            "minimum": 0,
+                            "maximum": 360
+                        },
+                        "rotation": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/widgets/extra/meter.html#_CPPv424lv_meter_set_scale_rangeP8lv_obj_tP16lv_meter_scale_t7int32_t7int32_t8uint32_t8uint32_t",
+                            "description": "Starting rotation of the meter",
+                            "minimum": 0,
+                            "maximum": 100
+                        },
+                        "meter_indicator": {
+                            "oneOf": [
+                                {
+                                    "type": "object",
+                                    "title": "https://docs.lvgl.io/master/widgets/extra/meter.html#_CPPv424lv_meter_add_scale_linesP8lv_obj_tP16lv_meter_scale_t10lv_color_t10lv_color_tb7int16_t",
+                                    "description": "Sets the indicator of the meter to be ticks, covering the background ticks",
+                                    "properties": {
+                                        "type": {
+                                            "const": "line"
+                                        },
+                                        "indic_start_value": {
+                                            "type": "integer",
+                                            "title": "https://docs.lvgl.io/master/widgets/extra/meter.html#_CPPv424lv_meter_add_scale_linesP8lv_obj_tP16lv_meter_scale_t10lv_color_t10lv_color_tb7int16_t",
+                                            "description": "Sets the starting start value of the indicator",
+                                            "minimum": 0,
+                                            "maximum": 100
+                                        },
+                                        "indic_end_value": {
+                                            "type": "integer",
+                                            "title": "https://docs.lvgl.io/master/widgets/extra/meter.html#_CPPv424lv_meter_add_scale_linesP8lv_obj_tP16lv_meter_scale_t10lv_color_t10lv_color_tb7int16_t",
+                                            "description": "Sets the starting end value of the indicator",
+                                            "minimum": 0,
+                                            "maximum": 100
+                                        },
+                                        "start_color": {
+                                            "type": "object",
+                                            "title": "https://docs.lvgl.io/master/widgets/extra/meter.html#_CPPv424lv_meter_add_scale_linesP8lv_obj_tP16lv_meter_scale_t10lv_color_t10lv_color_tb7int16_t",
+                                            "description": "Starting color of the ticks",
+                                            "properties": {
+                                                "r": {
+                                                    "type": "integer",
+                                                    "description": "red value",
+                                                    "minimum": 0,
+                                                    "maximum": 255
+                                                },
+                                                "g": {
+                                                    "type": "integer",
+                                                    "description": "green value",
+                                                    "minimum": 0,
+                                                    "maximum": 255
+                                                },
+                                                "b": {
+                                                    "type": "integer",
+                                                    "description": "blue value",
+                                                    "minimum": 0,
+                                                    "maximum": 255
+                                                }
+                                            },
+                                            "required": [
+                                                "r",
+                                                "g",
+                                                "b"
+                                            ]
+                                        },
+                                        "end_color": {
+                                            "type": "object",
+                                            "title": "https://docs.lvgl.io/master/widgets/extra/meter.html#_CPPv424lv_meter_add_scale_linesP8lv_obj_tP16lv_meter_scale_t10lv_color_t10lv_color_tb7int16_t",
+                                            "description": "Ending color of the ticks",
+                                            "properties": {
+                                                "r": {
+                                                    "type": "integer",
+                                                    "description": "red value",
+                                                    "minimum": 0,
+                                                    "maximum": 255
+                                                },
+                                                "g": {
+                                                    "type": "integer",
+                                                    "description": "green value",
+                                                    "minimum": 0,
+                                                    "maximum": 255
+                                                },
+                                                "b": {
+                                                    "type": "integer",
+                                                    "description": "blue value",
+                                                    "minimum": 0,
+                                                    "maximum": 255
+                                                }
+                                            },
+                                            "required": [
+                                                "r",
+                                                "g",
+                                                "b"
+                                            ]
+                                        },
+                                        "tick_width_mod": {
+                                            "type": "integer",
+                                            "title": "https://docs.lvgl.io/master/widgets/extra/meter.html#_CPPv424lv_meter_add_scale_linesP8lv_obj_tP16lv_meter_scale_t10lv_color_t10lv_color_tb7int16_t",
+                                            "description": "Modifier to the background tick width",
+                                            "minimum": 0,
+                                            "maximum": 20
+                                        },
+                                        "local_gradient": {
+                                            "type": "integer",
+                                            "title": "https://docs.lvgl.io/master/widgets/extra/meter.html#_CPPv424lv_meter_add_scale_linesP8lv_obj_tP16lv_meter_scale_t10lv_color_t10lv_color_tb7int16_t",
+                                            "description": "Determines whether a gradient is applied between the start and end colors",
+                                            "minimum": 0,
+                                            "maximum": 1
+                                        }
+                                    }
+                                },
+                                {
+                                    "type": "object",
+                                    "title": "https://docs.lvgl.io/master/widgets/extra/meter.html#_CPPv416lv_meter_add_arcP8lv_obj_tP16lv_meter_scale_t8uint16_t10lv_color_t7int16_t",
+                                    "description": "Applies an arc indicator over the background ticks",
+                                    "properties": {
+                                        "type": {
+                                            "const": "arc"
+                                        },
+                                        "arc_stroke_width": {
+                                            "type": "integer",
+                                            "title": "https://docs.lvgl.io/master/widgets/extra/meter.html#_CPPv416lv_meter_add_arcP8lv_obj_tP16lv_meter_scale_t8uint16_t10lv_color_t7int16_t",
+                                            "description": "Sets the stroke width of the arc indicator",
+                                            "minimum": 1,
+                                            "maximum": 40
+                                        },
+                                        "arc_color": {
+                                            "type": "object",
+                                            "title": "https://docs.lvgl.io/master/widgets/extra/meter.html#_CPPv416lv_meter_add_arcP8lv_obj_tP16lv_meter_scale_t8uint16_t10lv_color_t7int16_t",
+                                            "description": "Sets the color of the indicator arc",
+                                            "properties": {
+                                                "r": {
+                                                    "type": "integer",
+                                                    "description": "red value",
+                                                    "minimum": 0,
+                                                    "maximum": 255
+                                                },
+                                                "g": {
+                                                    "type": "integer",
+                                                    "description": "green value",
+                                                    "minimum": 0,
+                                                    "maximum": 255
+                                                },
+                                                "b": {
+                                                    "type": "integer",
+                                                    "description": "blue value",
+                                                    "minimum": 0,
+                                                    "maximum": 255
+                                                }
+                                            },
+                                            "required": [
+                                                "r",
+                                                "g",
+                                                "b"
+                                            ]
+                                        },
+                                        "offset_from_meter": {
+                                            "type": "integer",
+                                            "title": "https://docs.lvgl.io/master/widgets/extra/meter.html#_CPPv416lv_meter_add_arcP8lv_obj_tP16lv_meter_scale_t8uint16_t10lv_color_t7int16_t",
+                                            "description": "Sets the offset from the meter scale, typically 0",
+                                            "minimum": -10,
+                                            "maximum": 10
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                },
+                "aos": {
+                    "type": "array",
+                    "description": "Contains the collection of animations to run on view creation for a given widget",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/animation"
+                            }
+                        ]
+                    }
+                },
+                "aoe": {
+                    "type": "array",
+                    "description": "Contains the collection of animations to run on view exit for a given widget",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/animation"
+                            }
+                        ]
+                    }
+                },
+                "adc": {
+                    "type": "array",
+                    "description": "Contains the collection of animations to run when data has changed in firmata, or if there is a call_adc_on_cb is set",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/animation"
+                            }
+                        ]
+                    }
+                }
+            },
+            "required": [
+                "values",
+                "type",
+                "meter_scale"
+            ]
+        },
+        "canvas": {
+            "type": "object",
+            "title": "",
+            "description": "An LVGL canvas widget - resource intensive",
+            "properties": {
+                "type": {
+                    "const": "canvas"
+                },
+                "values": {
+                    "$ref": "#/definitions/values"
+                },
+                "canvas_values": {
+                    "type": "object",
+                    "description": "Values to set for the label widget at creation",
+                    "properties": {
+                        "canvas_size": {
+                            "type": "object",
+                            "title": "",
+                            "description": "",
+                            "properties": {
+                                "width": {
+                                    "type": "integer"
+                                },
+                                "height": {
+                                    "type": "integer"
+                                }
+                            }
+                        },
+                        "canvas_color_format": {
+                            "type": "string",
+                            "title": "",
+                            "description": ""
+                        },
+                        "canvas_background": {
+                            "type": "object",
+                            "title": "",
+                            "description": "",
+                            "properties": {
+                                "bg_color": {
+                                    "type": "object",
+                                    "title": "",
+                                    "description": "",
+                                    "properties": {
+                                        "r": {
+                                            "type": "integer"
+                                        },
+                                        "g": {
+                                            "type": "integer"
+                                        },
+                                        "b": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "required": [
+                                        "r",
+                                        "g",
+                                        "b"
+                                    ]
+                                },
+                                "bg_opa": {
+                                    "type": "integer",
+                                    "title": "",
+                                    "description": ""
+                                }
+                            }
+                        },
+                        "canvas_draw_list": {
+                            "type": "array",
+                            "title": "",
+                            "description": ""
+                        }
+                    }
+                },
+                "aos": {
+                    "type": "array",
+                    "description": "Contains the collection of animations to run on view creation for a given widget",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/animation"
+                            }
+                        ]
+                    }
+                },
+                "aoe": {
+                    "type": "array",
+                    "description": "Contains the collection of animations to run on view exit for a given widget",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/animation"
+                            }
+                        ]
+                    }
+                },
+                "adc": {
+                    "type": "array",
+                    "description": "Contains the collection of animations to run when data has changed in firmata, or if there is a call_adc_on_cb is set",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/animation"
+                            }
+                        ]
+                    }
+                }
+            },
+            "required": [
+                "type",
+                "values",
+                "canvas_values"
+            ]
+        },
+        "values": {
+            "type": "object",
+            "description": "Generic set of values to be applied to any given widget at creation",
+            "properties": {
+                "ai": {
+                    "type": "object",
+                    "title": "https://docs.lvgl.io/master/widgets/obj.html?highlight=obj_align#alignment",
+                    "description": "Animation info values, which are applied to the object at creation and then saved to the object state for ref by animations",
+                    "properties": {
+                        "xo": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/widgets/obj.html?highlight=obj_align#alignment",
+                            "description": "Offset from the alignment value (al), +x = move right, -x = move left"
+                        },
+                        "yo": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/widgets/obj.html?highlight=obj_align#alignment",
+                            "description": "Offset from the alignment value (al), +y = move up, -y = move down"
+                        },
+                        "al": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/widgets/obj.html?highlight=obj_align#alignment",
+                            "description": "Alignment to be set for the widget, once set should not be changed, 1 = top left, 9 = bottom right, defaults to 0/5 = center",
+                            "minimum": 0,
+                            "maximum": 9
+                        },
+                        "num_repeats": {
+                            "type": "integer",
+                            "description": "The maximum number of animations triggered by state to occur",
+                            "minimum": -1,
+                            "maximum": 255
+                        },
+                        "state": {
+                            "type": "integer",
+                            "description": "The initial state of the widget",
+                            "minimum": 0,
+                            "maximum": 100
+                        },
+                        "num_states": {
+                            "type": "integer",
+                            "description": "The total number of states for the widget",
+                            "minimum": 1,
+                            "maximum": 100
+                        }
+                    },
+                    "required": [
+                        "xo",
+                        "yo",
+                        "al"
+                    ]
+                },
+                "size": {
+                    "type": "object",
+                    "title": "https://docs.lvgl.io/master/widgets/obj.html?highlight=obj_set_size#size",
+                    "description": "Sets the initial size of the widget",
+                    "properties": {
+                        "width": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/widgets/obj.html?highlight=obj_set_size#size",
+                            "description": "Sets the initial width of the widget",
+                            "minimum": 0
+                        },
+                        "height": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/widgets/obj.html?highlight=obj_set_size#size",
+                            "description": "Sets the initial height of the widget",
+                            "minimum": 0
+                        }
+                    },
+                    "required": [
+                        "width",
+                        "height"
+                    ]
+                },
+                "call_adc_on_adc_cb": {
+                    "type": "integer",
+                    "description": "Determines whether to call the data change function, up to a number of times = num_repeats",
+                    "minimum": 0,
+                    "maximum": 1
+                },
+                "inc_state_on_adc_cb": {
+                    "type": "integer",
+                    "description": "Determines whether to increment the state of the widget when a data change timeline completes, must be set for state to increment else state will remain constant",
+                    "minimum": 0,
+                    "maximum": 1
+                },
+                "hidden_until_cb": {
+                    "type": "integer",
+                    "title": "https://docs.lvgl.io/master/widgets/obj.html?highlight=add_flag#_CPPv415lv_obj_add_flagP8lv_obj_t13lv_obj_flag_t",
+                    "description": "If this value is set, the widget will not appear until the start animation (aos) has completed",
+                    "minimum": 0,
+                    "maximum": 1
+                }
+            }
+        },
+
+        "animation": {
+            "type": "object",
+            "description": "Provides the framework for any given animation",
+            "properties": {
+                "t": {
+                    "type": "integer",
+                    "title": "https://docs.lvgl.io/master/overview/animation.html#_CPPv416lv_anim_set_timeP9lv_anim_t8uint32_t",
+                    "description": "The time of the animation in ms",
+                    "minimum": 0,
+                    "maximum": 10000
+                },
+                "timeline_start_time": {
+                    "type": "integer",
+                    "title": "https://docs.lvgl.io/master/overview/animation.html#timeline",
+                    "description": "Determines the time in ms for the animation to be placed on its relative timeline",
+                    "minimum": 0,
+                    "maximum": 10000
+                },
+                "f": {
+                    "description": "The initial value to start the animation with (ie. if animation value range is 0-255, this would be 0)",
+                    "title": "https://docs.lvgl.io/master/overview/animation.html#_CPPv418lv_anim_set_valuesP9lv_anim_t7int32_t7int32_t",
+                    "oneOf": [
+                        {
+                            "const": "c",
+                            "description": "If the from value is set to current, then it will take the current value of the widget for the given animation property"
+                        },
+                        {
+                            "type": "integer",
+                            "description": "provide some value which sets the start of the animation value range"
+                        }
+                    ]
+                },
+                "to": {
+                    "description": "Target value of the animation, can be set to an integer, a color, or a specific firmata value",
+                    "title": "https://docs.lvgl.io/master/overview/animation.html#_CPPv418lv_anim_set_valuesP9lv_anim_t7int32_t7int32_t",
+                    "oneOf": [
+                        {
+                            "enum": [
+                                "state_of_charge",
+                                "pump_mode",
+                                "brush_mode",
+                                "runtime_to_empty",
+                                "time_to_full_charge"
+                            ],
+                            "description": "If the to value is set to one of these strings, the target value will be set to the latest data on the firmata_data_model for that field"
+                        },
+                        {
+                            "type": "integer",
+                            "description": "provide some value which sets the end of the animation value range"
+                        },
+                        {
+                            "type": "object",
+                            "description": "Special case for animation to a specific color, from value should be set to current for this case",
+                            "properties": {
+                                "color": {
+                                    "type": "object",
+                                    "properties": {
+                                        "r": {
+                                            "type": "integer",
+                                            "description": "red value",
+                                            "minimum": 0,
+                                            "maximum": 255
+                                        },
+                                        "g": {
+                                            "type": "integer",
+                                            "description": "green value",
+                                            "minimum": 0,
+                                            "maximum": 255
+                                        },
+                                        "b": {
+                                            "type": "integer",
+                                            "description": "blue value",
+                                            "minimum": 0,
+                                            "maximum": 255
+                                        }
+                                    },
+                                    "required": [
+                                        "r",
+                                        "g",
+                                        "b"
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "color"
+                            ]
+                        }
+                    ]
+                },
+                "path": {
+                    "type": "integer",
+                    "title": "https://docs.lvgl.io/master/overview/animation.html#_CPPv419lv_anim_set_path_cbP9lv_anim_t17lv_anim_path_cb_t",
+                    "description": "Sets the animation path to follow, how the value range is incremented upon",
+                    "minimum": 0,
+                    "maximum": 1
+                },
+                "reset_state": {
+                    "type": "integer",
+                    "description": "This value should be set alongside a trigger: {state: n} property, in order to reset the state of the object to 0",
+                    "minimum": 0,
+                    "maximum": 1
+                },
+                "tr": {
+                    "description": "Sets the animation to only trigger in specific cases",
+                    "type": "array",
+                    "items":{
+                        "anyOf": [
+                            {
+                                "type": "object",
+                                "description": "Sets the animation to only trigger when mode equals the integer set",
+                                "properties": {
+                                    "mode": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "maximum": 2
+                                    }
+                                }
+                            },
+                            {
+                                "type": "object",
+                                "description": "Sets the animation to trigger when the detent value is equal to the integer",
+                                "properties": {
+                                    "detent": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "maximum": 1
+                                    }
+                                }
+                            },
+                            {
+                                "type": "object",
+                                "description": "Sets the animation to trigger when the pump mode is equal to the integer",
+                                "properties": {
+                                    "p_m": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "maximum": 1
+                                    }
+                                }
+                            },
+                            {
+                                "type": "object",
+                                "description": "Sets the animation to trigger when the widget state is equal to the integer, if set, then inc_state_on_adc_cb should also be set in values",
+                                "properties": {
+                                    "state": {
+                                        "type": "integer",
+                                        "minimum": 0
+                                    }
+                                }
+                            },
+                            {
+                                "type": "object",
+                                "description": "Sets the animation to trigger when the state of charge is between the minimum and maximum values (inclusive)",
+                                "properties": {
+                                    "state_of_charge": {
+                                        "type": "object",
+                                        "properties": {
+                                            "min": {
+                                                "type": "integer"
+
+                                            },
+                                            "max": {
+                                                "type": "integer"
+
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                },
+                "p": {
+                    "description": "Property for the animation to change, MUST MATCH THE WIDGET!!!",
+                    "enum": [
+                        "img_opa",
+                        "img_zoom",
+                        "img_rotation",
+                        "img_src",
+                        "a_d",
+                        "arc_value",
+                        "meter_value",
+                        "meter_diameter",
+                        "arc_color",
+                        "pos_x",
+                        "pos_y",
+                        "width",
+                        "height",
+                        "text_number",
+                        "text_percent",
+                        "batt_width",
+                        "hidden_flag",
+                        "visible_flag",
+                        "img_recolor_opa",
+                        "img_recolor"
+                    ]
+                }
+            },
+            "required": [
+                "p"
+            ]
+        }
+    }
+}
