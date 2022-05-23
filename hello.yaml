@@ -1,0 +1,111 @@
+---
+view:
+  name: hello
+  width: 240
+  height: 320
+  scrollbar_mode: 0
+  bg_opa: 255
+  bg_color: COLOR_BLACK
+  next_views:
+    - VIEW_TYPE_CLEANING:
+        - DURABLE_STATE_ISCLEANING: 1
+    - VIEW_TYPE_PAIRING_GUIDE_1:
+        - TIMEOUT: 3500
+widgets:
+  - name: fill circle
+    type: object
+    values:
+      ai:
+        xo: 0
+        yo: 40
+        al: 2
+    object_values:
+      color: COLOR_GREY
+      width: 140
+      height: 140
+      circle: true
+      border: 0
+    aos:
+      - property: bg_opa
+        from: 0
+        to: 255
+        time: 500
+        path: lv_anim_path_ease_in_out
+
+  - name: hand image
+    parent: 0
+    type: image
+    values:
+      ai:
+        xo: 0
+        yo: 0
+        al: 0
+    image_values:
+      src: hand
+      img_rotation: 3599
+    aos:
+      - property: img_opa
+        from: 0
+        to: 255
+        time: 500
+        path: lv_anim_path_ease_in_out
+
+      - property: img_rotation
+        from: 3599
+        to: 3100
+        time: 250
+        delay: 750
+        path: lv_anim_path_ease_in_out
+        ready:
+          property: img_rotation
+          from: 3100
+          to: 3599
+          time: 250
+          path: lv_anim_path_ease_in_out
+    aoe:
+      - property: pos_x
+        from: c
+        to: -30
+        time: 250
+        path: lv_anim_path_ease_in_out
+      - property: img_opa
+        from: c
+        to: 0
+        time: 250
+        path: lv_anim_path_ease_in_out
+
+  - type: label
+    values:
+      ai:
+        xo: 0
+        yo: 0
+        al: 8
+    label_values:
+      text_style: FONT_MEDIUM
+      text_opa: 0
+      string_id: hello
+      text_alignment: LV_TEXT_ALIGN_CENTER
+    aos:
+      - property: pos_y
+        from: c
+        to: -30
+        time: 250
+        delay: 2250
+        path: lv_anim_path_ease_in_out
+      - property: text_opa
+        from: c
+        to: 255
+        time: 250
+        delay: 2250
+        path: lv_anim_path_ease_in_out
+    aoe:
+      - property: pos_x
+        from: c
+        to: -30
+        time: 250
+        path: lv_anim_path_ease_in_out
+      - property: text_opa
+        from: c
+        to: 0
+        time: 250
+        path: lv_anim_path_ease_in_out
