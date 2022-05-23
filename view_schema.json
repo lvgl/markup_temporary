@@ -7,7 +7,7 @@
     "properties": {
         "view": {
             "type": "object",
-            "description": "View object (Expand to contain further view elements later)",
+            "description": "View object on which other widgets are placed",
             "properties": {
                 "name": {
                     "type": "string"
@@ -34,25 +34,16 @@
                     "minimum": 0,
                     "maximum": 255
                 },
-                "bg_color": {
-                    "type": "object",
-                    "description": "Color for the background of the view",
-                    "properties": {
-                        "r": {
-                            "type": "integer",
-                            "minimum": 0,
-                            "maximum": 255
-                        },
-                        "g": {
-                            "type": "integer",
-                            "minimum": 0,
-                            "maximum": 255
-                        },
-                        "b": {
-                            "type": "integer",
-                            "minimum": 0,
-                            "maximum": 255
-                        }
+                "bg_color": {"$ref": "#/definitions/colors"},
+                "next_views": {
+                    "type": "array",
+                    "description": "Next possible states for a given view",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/next_views"
+                            }
+                        ]
                     }
                 }
             },
@@ -62,7 +53,8 @@
                 "height",
                 "scrollbar_mode",
                 "bg_opa",
-                "bg_color"
+                "bg_color",
+                "next_views"
             ]
         },
         "widgets": {
@@ -73,29 +65,41 @@
                     {
                         "type": "object",
                         "$ref": "#/definitions/arc"
-                    },{
+                    },
+                    {
                         "type": "object",
                         "$ref": "#/definitions/bar"
-                    },{
-                        "type": "object",
-                        "$ref": "#/definitions/image"
-                    },{
-                        "type": "object",
-                        "$ref": "#/definitions/label"
-                    },{
-                        "type": "object",
-                        "$ref": "#/definitions/meter"
-                    },{
+                    },
+                    {
                         "type": "object",
                         "$ref": "#/definitions/canvas"
+                    },
+                    {
+                        "type": "object",
+                        "$ref": "#/definitions/image"
+                    },
+                    {
+                        "type": "object",
+                        "$ref": "#/definitions/label"
+                    },
+                    {
+                        "type": "object",
+                        "$ref": "#/definitions/lottie"
+                    },
+                    {
+                        "type": "object",
+                        "$ref": "#/definitions/meter"
+                    },
+                    {
+                        "type": "object",
+                        "$ref": "#/definitions/object"
                     }
                 ]
             }
         }
     },
     "definitions": {
-        "arc":
-        {
+        "arc":{
             "type": "object",
             "description": "An LVGL Arc Widget",
             "title": "https://docs.lvgl.io/master/widgets/core/arc.html",
@@ -169,64 +173,14 @@
                             "maximum": 1
                         },
                         "arc_indicator_color": {
-                            "type": "object",
                             "title": "https://docs.lvgl.io/master/overview/style.html#_CPPv426lv_obj_set_style_arc_colorP9_lv_obj_t10lv_color_t19lv_style_selector_t",
                             "description": "Color of the indicator arc at creation",
-                            "properties": {
-                                "r": {
-                                    "type": "integer",
-                                    "description": "red value",
-                                    "minimum": 0,
-                                    "maximum": 255
-                                },
-                                "g": {
-                                    "type": "integer",
-                                    "description": "green value",
-                                    "minimum": 0,
-                                    "maximum": 255
-                                },
-                                "b": {
-                                    "type": "integer",
-                                    "description": "blue value",
-                                    "minimum": 0,
-                                    "maximum": 255
-                                }
-                            },
-                            "required": [
-                                "r",
-                                "g",
-                                "b"
-                            ]
+                            "$ref": "#/definitions/colors"
                         },
                         "arc_bg_color": {
-                            "type": "object",
                             "title": "https://docs.lvgl.io/master/overview/style.html#_CPPv426lv_obj_set_style_arc_colorP9_lv_obj_t10lv_color_t19lv_style_selector_t",
                             "description": "Color of the background arc at creation",
-                            "properties": {
-                                "r": {
-                                    "type": "integer",
-                                    "description": "red value",
-                                    "minimum": 0,
-                                    "maximum": 255
-                                },
-                                "g": {
-                                    "type": "integer",
-                                    "description": "green value",
-                                    "minimum": 0,
-                                    "maximum": 255
-                                },
-                                "b": {
-                                    "type": "integer",
-                                    "description": "blue value",
-                                    "minimum": 0,
-                                    "maximum": 255
-                                }
-                            },
-                            "required": [
-                                "r",
-                                "g",
-                                "b"
-                            ]
+                            "$ref": "#/definitions/colors"
                         },
                         "arc_clickable": {
                             "type": "integer",
@@ -319,34 +273,9 @@
                             "maximum": 255
                         },
                         "bg_color": {
-                            "type": "object",
                             "title": "https://docs.lvgl.io/master/overview/style.html?highlight=bg_color#_CPPv425lv_obj_set_style_bg_colorP9_lv_obj_t10lv_color_t19lv_style_selector_t",
                             "description": "Sets the color of the bar widget at creation",
-                            "properties": {
-                                "r": {
-                                    "type": "integer",
-                                    "description": "red value",
-                                    "minimum": 0,
-                                    "maximum": 255
-                                },
-                                "g": {
-                                    "type": "integer",
-                                    "description": "green value",
-                                    "minimum": 0,
-                                    "maximum": 255
-                                },
-                                "b": {
-                                    "type": "integer",
-                                    "description": "blue value",
-                                    "minimum": 0,
-                                    "maximum": 255
-                                }
-                            },
-                            "required": [
-                                "r",
-                                "g",
-                                "b"
-                            ]
+                            "$ref": "#/definitions/colors"
                         },
                         "scrollbar_mode": {
                             "type": "integer",
@@ -397,6 +326,7 @@
                 "bar_values"
             ]
         },
+
         "image": {
             "type": "object",
             "title": "https://docs.lvgl.io/master/widgets/core/img.html",
@@ -431,7 +361,7 @@
                                         "dog",
                                         "brush",
                                         "water",
-                                        "no_water",
+                                        "no_water_icon",
                                         "low_water",
                                         "error",
                                         "battery_border",
@@ -499,6 +429,7 @@
                 }
             }
         },
+
         "label": {
             "type": "object",
             "title": "https://docs.lvgl.io/master/widgets/core/label.html",
@@ -514,23 +445,67 @@
                     "type": "object",
                     "description": "Values to set for the label widget at creation",
                     "properties": {
-                        "font": {
-                            "type": "string",
-                            "title": "https://docs.lvgl.io/master/overview/style.html?highlight=lv_obj_set_style_text_font#_CPPv426lv_obj_set_style_text_fontP9_lv_obj_tPK9lv_font_t19lv_style_selector_t",
-                            "description": "Sets the font by abstraction, by default sets to lv_font_montserrat_16",
-                            "enum": [
-                                "monospace_cubic_30",
-                                "monospace_cubic_16",
-                                "montserrat_regular_30",
-                                "montserrat_regular_16",
-                                "lv_font_montserrat_30",
-                                "lv_font_montserrat_16"
-                            ]
+                        "text_style": {
+                            "title": "",
+                            "description": "Sets the font to a pre-generated font style defined by assets/bissell_text_styles, this sets font, size, and color",
+                            "$ref": "#/definitions/font_styles"
                         },
-                        "default_text": {
+                        "text_opa":
+                        {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/overview/style-props.html#text-opa",
+                            "description": "Sets the opacity of the text at creation time"
+                        },
+                        "text_color":
+                        {
+                            "$ref": "#/definitions/colors",
+                            "title": "https://docs.lvgl.io/master/overview/style-props.html#text-color",
+                            "description": "Sets the color of the text at creation time"
+                        },
+                        "text_alignment":
+                        {
+                            "enum": [
+                                "LV_TEXT_ALIGN_AUTO",
+                                "LV_TEXT_ALIGN_LEFT",
+                                "LV_TEXT_ALIGN_CENTER",
+                                "LV_TEXT_ALIGN_RIGHT"
+                            ],
+                            "title": "https://docs.lvgl.io/master/overview/style-props.html#text-align",
+                            "description": "Sets the alignment of the text at creation time"
+                        },
+                        "default_text":
+                        {
                             "type": "string",
                             "title": "https://docs.lvgl.io/master/widgets/core/label.html#_CPPv417lv_label_set_textP8lv_obj_tPKc",
-                            "description": "Default string to set when label is created"
+                            "description": "Sets the default text to be displayed in the label widget at creation time"
+                        },
+                        "string_id":
+                        {
+                            "enum": [
+                                "cleaning_complete",
+                                "cleanout_phase_1",
+                                "cleanout_phase_2",
+                                "cleanout_complete_dry",
+                                "cleanout_prompt_1",
+                                "cleanout_prompt_2",
+                                "cleanout_prompt_3",
+                                "cleanout_waiting",
+                                "cycle_discount",
+                                "dock_to_begin_onboarding",
+                                "guided_use_1",
+                                "guided_use_2",
+                                "guided_use_3",
+                                "hello",
+                                "pairing_guide_1",
+                                "pairing_guide_2",
+                                "features",
+                                "lets_clean",
+                                "ready_to_clean",
+                                "turbo",
+                                "cleanout_success"
+                            ],
+                            "title": "",
+                            "description": "Sets the text of the label to the string ID for the currently selected language"
                         }
                     }
                 },
@@ -574,6 +549,89 @@
                 "label_values"
             ]
         },
+
+        "lottie": {
+            "type": "object",
+            "title": "https://docs.lvgl.io/master/widgets/core/lottie.html",
+            "description": "An LVGL lottie widget",
+            "properties": {
+                "type": {
+                    "const": "lottie"
+                },
+                "values": {
+                    "$ref": "#/definitions/values"
+                },
+                "lottie_values": {
+                    "type": "object",
+                    "description": "Values to set for the lottie widget at creation",
+                    "properties": {
+                        "src": {
+                            "type": "string",
+                            "title": "https://docs.lvgl.io/master/widgets/core/lottie.html#_CPPv417lv_lottie_set_srcP8lv_obj_tPKc",
+                            "description": "Sets the src to be provided to the lottie widget at creation, abstracted to a string."
+                        },
+                        "lottie_width": {
+                            "type": "integer",
+                            "title": "",
+                            "description": "Sets the width of the lottie widget at creation"
+                        },
+                        "lottie_height": {
+                            "type": "integer",
+                            "title": "",
+                            "description": "Sets the height of the lottie widget at creation"
+                        },
+                        "lottie_init_frame": {
+                            "type": "integer",
+                            "title": "",
+                            "description": "Sets the initial frame of the lottie widget at creation"
+                        },
+                        "lottie_start_frame": {
+                            "type": "integer",
+                            "title": "",
+                            "description": "Sets the start frame of the lottie widget at creation, if set to 0, will start at the first frame on each loop"
+                        },
+                        "lottie_dest_frame": {
+                            "type": "integer",
+                            "title": "",
+                            "description": "Sets the end frame of the lottie widget at creation, if set to Nth frame of anim, will end at the last frame on each loop"
+                        },
+                        "lottie_framerate": {
+                            "type": "integer",
+                            "title": "",
+                            "description": "Sets the framerate of the lottie widget at creation"
+                        },
+                        "lottie_playmode": {
+                            "type": "object",
+                            "title": "",
+                            "description": "Contains the playmode to be applied at lottie creation",
+                            "properties": {
+                                "forward": {
+                                    "type": "integer",
+                                    "title": "",
+                                    "description": "Sets the playmode to forward"
+                                },
+                                "backward": {
+                                    "type": "integer",
+                                    "title": "",
+                                    "description": "Sets the playmode to backward"
+                                },
+                                "play": {
+                                    "type": "integer",
+                                    "title": "",
+                                    "description": "Sets the playmode to play"
+                                },
+                                "pause": {
+                                    "type": "integer",
+                                    "title": "",
+                                    "description": "Sets the playmode to pause"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
         "meter": {
             "type": "object",
             "title": "https://docs.lvgl.io/master/widgets/extra/meter.html",
@@ -867,6 +925,7 @@
                 "meter_scale"
             ]
         },
+
         "canvas": {
             "type": "object",
             "title": "",
@@ -905,27 +964,7 @@
                             "title": "",
                             "description": "",
                             "properties": {
-                                "bg_color": {
-                                    "type": "object",
-                                    "title": "",
-                                    "description": "",
-                                    "properties": {
-                                        "r": {
-                                            "type": "integer"
-                                        },
-                                        "g": {
-                                            "type": "integer"
-                                        },
-                                        "b": {
-                                            "type": "integer"
-                                        }
-                                    },
-                                    "required": [
-                                        "r",
-                                        "g",
-                                        "b"
-                                    ]
-                                },
+                                "bg_color": {"$ref": "#/definitions/colors"},
                                 "bg_opa": {
                                     "type": "integer",
                                     "title": "",
@@ -980,6 +1019,103 @@
                 "canvas_values"
             ]
         },
+
+        "object": {
+            "type": "object",
+            "title": "https://docs.lvgl.io/master/widgets/core/bar.html",
+            "description": "An LVGL bar widget",
+            "properties": {
+                "type": {
+                    "const": "object"
+                },
+                "values": {
+                    "$ref": "#/definitions/values"
+                },
+                "object_values": {
+                    "type": "object",
+                    "description": "Collection of values to be set for the object widget at creation",
+                    "properties": {
+                        "style_radius": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/master/overview/style.html?highlight=style_radius#_CPPv423lv_obj_set_style_radiusP9_lv_obj_t10lv_coord_t19lv_style_selector_t",
+                            "description": "Sets the corner radius of the bar widget at creation",
+                            "minimum": 0,
+                            "maximum": 50
+                        },
+                        "color": {
+                            "$ref": "#/definitions/colors",
+                            "title": "https://docs.lvgl.io/latest/en/html/overview/style.html#local-styles",
+                            "description": "Sets the color of the object widget at creation"
+                        },
+                        "width": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/latest/en/html/widgets/obj.html#_CPPv416lv_obj_set_widthP8lv_obj_t10lv_coord_t",
+                            "description": "Sets the width of the base object",
+                            "minimum": 0,
+                            "maximum": 1000
+                        },
+                        "height": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/latest/en/html/widgets/obj.html#_CPPv417lv_obj_set_heightP8lv_obj_t10lv_coord_t",
+                            "description": "Sets the height of the base object",
+                            "minimum": 0,
+                            "maximum": 1000
+                        },
+                        "circle": {
+                            "type": "boolean",
+                            "title": "https://docs.lvgl.io/master/overview/style-props.html#radius",
+                            "description": "Sets the radius of the object to LV_RADIUS_CIRCLE, making the object a circle"
+                        },
+                        "border": {
+                            "type": "integer",
+                            "title": "https://docs.lvgl.io/latest/en/html/overview/style.html#border-properties",
+                            "description": "Sets the border width of the object, a border width of 0 removes the border",
+                            "minimum": 0,
+                            "maximum": 50
+                        }
+                    }
+                },
+                "aos": {
+                    "type": "array",
+                    "description": "Contains the collection of animations to run on view creation for a given widget",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/animation"
+                            }
+                        ]
+                    }
+                },
+                "aoe": {
+                    "type": "array",
+                    "description": "Contains the collection of animations to run on view exit for a given widget",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/animation"
+                            }
+                        ]
+                    }
+                },
+                "adc": {
+                    "type": "array",
+                    "description": "Contains the collection of animations to run when data has changed in firmata, or if there is a call_adc_on_cb is set",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/definitions/animation"
+                            }
+                        ]
+                    }
+                }
+            },
+            "required": [
+                "values",
+                "type",
+                "object_values"
+            ]
+        },
+
         "values": {
             "type": "object",
             "description": "Generic set of values to be applied to any given widget at creation",
@@ -1080,21 +1216,14 @@
             "type": "object",
             "description": "Provides the framework for any given animation",
             "properties": {
-                "t": {
+                "time": {
                     "type": "integer",
                     "title": "https://docs.lvgl.io/master/overview/animation.html#_CPPv416lv_anim_set_timeP9lv_anim_t8uint32_t",
                     "description": "The time of the animation in ms",
                     "minimum": 0,
                     "maximum": 10000
                 },
-                "timeline_start_time": {
-                    "type": "integer",
-                    "title": "https://docs.lvgl.io/master/overview/animation.html#timeline",
-                    "description": "Determines the time in ms for the animation to be placed on its relative timeline",
-                    "minimum": 0,
-                    "maximum": 10000
-                },
-                "f": {
+                "from": {
                     "description": "The initial value to start the animation with (ie. if animation value range is 0-255, this would be 0)",
                     "title": "https://docs.lvgl.io/master/overview/animation.html#_CPPv418lv_anim_set_valuesP9lv_anim_t7int32_t7int32_t",
                     "oneOf": [
@@ -1113,14 +1242,8 @@
                     "title": "https://docs.lvgl.io/master/overview/animation.html#_CPPv418lv_anim_set_valuesP9lv_anim_t7int32_t7int32_t",
                     "oneOf": [
                         {
-                            "enum": [
-                                "state_of_charge",
-                                "pump_mode",
-                                "brush_mode",
-                                "runtime_to_empty",
-                                "time_to_full_charge"
-                            ],
-                            "description": "If the to value is set to one of these strings, the target value will be set to the latest data on the firmata_data_model for that field"
+                            "$ref": "#/definitions/udm_keys",
+                            "description": "If the to value is set to one of these strings, the target value will be set to the latest data on the UDM for that field"
                         },
                         {
                             "type": "integer",
@@ -1131,32 +1254,7 @@
                             "description": "Special case for animation to a specific color, from value should be set to current for this case",
                             "properties": {
                                 "color": {
-                                    "type": "object",
-                                    "properties": {
-                                        "r": {
-                                            "type": "integer",
-                                            "description": "red value",
-                                            "minimum": 0,
-                                            "maximum": 255
-                                        },
-                                        "g": {
-                                            "type": "integer",
-                                            "description": "green value",
-                                            "minimum": 0,
-                                            "maximum": 255
-                                        },
-                                        "b": {
-                                            "type": "integer",
-                                            "description": "blue value",
-                                            "minimum": 0,
-                                            "maximum": 255
-                                        }
-                                    },
-                                    "required": [
-                                        "r",
-                                        "g",
-                                        "b"
-                                    ]
+                                    "$ref": "#/definitions/colors"
                                 }
                             },
                             "required": [
@@ -1166,11 +1264,17 @@
                     ]
                 },
                 "path": {
-                    "type": "integer",
                     "title": "https://docs.lvgl.io/master/overview/animation.html#_CPPv419lv_anim_set_path_cbP9lv_anim_t17lv_anim_path_cb_t",
                     "description": "Sets the animation path to follow, how the value range is incremented upon",
-                    "minimum": 0,
-                    "maximum": 1
+                    "enum": [
+                        "lv_anim_path_linear",
+                        "lv_anim_path_ease_in",
+                        "lv_anim_path_ease_out",
+                        "lv_anim_path_ease_in_out",
+                        "lv_anim_path_overshoot",
+                        "lv_anim_path_bounce",
+                        "lv_anim_path_step"
+                    ]
                 },
                 "reset_state": {
                     "type": "integer",
@@ -1178,7 +1282,7 @@
                     "minimum": 0,
                     "maximum": 1
                 },
-                "tr": {
+                "trigger": {
                     "description": "Sets the animation to only trigger in specific cases",
                     "type": "array",
                     "items":{
@@ -1248,34 +1352,159 @@
                         ]
                     }
                 },
-                "p": {
+                "ready": {
+                    "$ref": "#/definitions/animation"
+                },
+                "property": {
                     "description": "Property for the animation to change, MUST MATCH THE WIDGET!!!",
                     "enum": [
                         "img_opa",
                         "img_zoom",
                         "img_rotation",
                         "img_src",
-                        "a_d",
+                        "img_recolor_opa",
+                        "img_recolor",
+
+                        "arc_rotation",
+                        "arc_start_angle",
+                        "arc_end_angle",
+                        "arc_diameter",
+                        "arc_color",
+                        "arg_bg_color",
+                        "arc_width",
+                        "arc_bg_width",
                         "arc_value",
+                        "arc_opa",
+                        "arc_bg_opa",
+
                         "meter_value",
                         "meter_diameter",
-                        "arc_color",
+
                         "pos_x",
                         "pos_y",
                         "width",
                         "height",
+                        "opa",
+                        "bg_opa",
+                        "object_color",
+
                         "text_number",
                         "text_percent",
+                        "text_time",
+                        "text",
+                        "text_color",
+                        "text_opa",
+
+                        "lottie_playmode",
+
+                        "bar_value",
+
                         "batt_width",
                         "hidden_flag",
-                        "visible_flag",
-                        "img_recolor_opa",
-                        "img_recolor"
+                        "visible_flag"
+
                     ]
                 }
             },
             "required": [
-                "p"
+                "property"
+            ]
+        },
+
+        "next_views": {
+            "type": "object",
+            "description": "Contains a list of next possible views from current view and triggers necessary to reach that view TODO expound on this?",
+            "properties": {
+                "items": {
+                    "contains":
+                    {
+                        "type": "object",
+                        "$ref": "#/definitions/udm_keys"
+                    }
+
+                }
+            }
+        },
+
+        "udm_keys": {
+            "enum": [
+                "DURABLE_FOOT_BRUSHCURRENTADC",
+                "DURABLE_FOOT_BRUSHRPM",
+                "DURABLE_FOOT_DETENTSWITCH",
+                "DURABLE_FOOT_DEBUGLED",
+                "DURABLE_FOOT_COVER",
+                "DURABLE_FOOT_DOCKED",
+                "DURABLE_FOOT_BRUSHMOTORDUTY",
+                "DURABLE_FOOT_BRUSHMOTORFREQUENCY",
+                "DURABLE_FOOT_BRUSHMOTORRAMPDURATION",
+                "DURABLE_FOOT_BRUSHMOTORRAMPPROFILE",
+                "DURABLE_FOOT_PUMPMOTORDUTY",
+                "DURABLE_FOOT_PUMPMOTORFREQUENCY",
+                "DURABLE_FOOT_PUMPMOTORRAMPDURATION",
+                "DURABLE_FOOT_PUMPMOTORRAMPPROFILE",
+                "DURABLE_MAIN_DEBUGLED",
+                "DURABLE_MAIN_POWERBUTTON",
+                "DURABLE_MAIN_MODEBUTTON",
+                "DURABLE_MAIN_TURBOBUTTON",
+                "DURABLE_MAIN_CLEANOUTBUTTON",
+                "DURABLE_MAIN_DIRTYTANKPRESENT",
+                "DURABLE_MAIN_DIRTYTANKFULL",
+                "DURABLE_MAIN_CLEANTANKPRESENT",
+                "DURABLE_MAIN_HANDLEMISSING",
+                "DURABLE_MAIN_STATEOFCHARGE",
+                "DURABLE_MAIN_RUNTIMETOEMPTY",
+                "DURABLE_MAIN_VOLTAGE",
+                "DURABLE_MAIN_VACMOTORRPM",
+                "DURABLE_MAIN_VACMOTORDUTY",
+                "DURABLE_MAIN_VACMOTORFREQUENCY",
+                "DURABLE_MAIN_VACMOTORRAMPDURATION",
+                "DURABLE_MAIN_VACMOTORRAMPPROFILE",
+                "DURABLE_MAIN_DIRTYADC",
+                "DURABLE_MAIN_CHARGERADC",
+                "DURABLE_STATE_POWERED",
+                "DURABLE_STATE_PAIRED",
+                "DURABLE_STATE_FANON",
+                "DURABLE_STATE_CLEANOUT",
+                "DURABLE_STATE_DOCKED",
+                "DURABLE_STATE_FOOTENABLED",
+                "DURABLE_STATE_ISCLEANING",
+                "DURABLE_STATE_BRUSHMODE",
+                "DURABLE_STATE_PUMPMODE",
+                "DURABLE_STATE_FANPOWER",
+                "DURABLE_STATE_MODESETTING",
+                "DURABLE_STATE_APPFSMENABLED",
+                "DURABLE_STATE_FLOORSENSINGSTATE",
+                "DURABLE_STATE_SHOWTUTORIALONSTARTUP",
+                "DURABLE_STATE_CLEANOUTRUNNING",
+                "DURABLE_STATE_CLEANOUTPHASE",
+                "DURABLE_STATE_VACMOTORERROR",
+                "DURABLE_STATE_PUMPMOTORERROR",
+                "DURABLE_STATE_BRUSHMOTORERROR",
+                "DURABLE_STATE_BATTERYERROR"
+            ]
+        },
+
+        "font_styles": {
+            "enum": [
+                "FONT_SMALL",
+                "FONT_MEDIUM",
+                "FONT_LARGE",
+                "FONT_NUMBERS_LARGE",
+                "FONT_NUMBERS_SMALL"
+            ]
+        },
+
+        "colors": {
+            "enum": [
+                "COLOR_BLUE",
+                "COLOR_GREEN",
+                "COLOR_AMBER",
+                "COLOR_GREY",
+                "COLOR_TAN",
+                "COLOR_WHITE",
+                "COLOR_RED",
+                "COLOR_BLACK",
+                "COLOR_DARK_BLUE"
             ]
         }
     }
